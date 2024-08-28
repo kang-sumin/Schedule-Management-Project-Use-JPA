@@ -16,6 +16,10 @@ public class ScheduleService {
     }
 
 
+    /**
+     * @param scheduleRequestDto Body로 들어온 일정 JSON
+     * @return 저장된 일정
+     */
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = new Schedule(scheduleRequestDto);
 
@@ -24,5 +28,11 @@ public class ScheduleService {
         ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(saveSchedule);
 
         return scheduleResponseDto;
+    }
+
+    public ScheduleResponseDto getSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
+
+        return new ScheduleResponseDto(schedule);
     }
 }
