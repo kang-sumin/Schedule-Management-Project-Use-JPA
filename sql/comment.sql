@@ -1,0 +1,10 @@
+CREATE TABLE COMMENT(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    contents VARCHAR(500) NOT NULL ,
+    create_at DATETIME NOT NULL ,
+    modified_at DATETIME NOT NULL ,
+    user_id BIGINT NOT NULL ,
+    schedule_id BIGINT NOT NULL ,
+    FOREIGN KEY (user_id) REFERENCES USER(id),
+    FOREIGN KEY (schedule_id) REFERENCES SCHEDULE(id)
+)
