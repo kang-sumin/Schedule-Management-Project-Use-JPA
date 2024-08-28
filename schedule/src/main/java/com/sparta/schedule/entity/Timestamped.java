@@ -1,6 +1,7 @@
 package com.sparta.schedule.entity;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class) // 자동 시간 추가 기능 Auditing
+@Transactional
 public abstract class Timestamped {
 
     @CreatedDate
@@ -24,6 +26,7 @@ public abstract class Timestamped {
     private LocalDateTime modifiedAt;
 
     @PrePersist
+    @LastModifiedDate
     public void createdAt(){
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
