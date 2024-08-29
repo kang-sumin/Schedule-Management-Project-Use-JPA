@@ -3,7 +3,6 @@ package com.sparta.schedule.controller;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
-import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
