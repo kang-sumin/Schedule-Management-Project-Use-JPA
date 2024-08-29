@@ -67,6 +67,13 @@ public class CommentService {
                 .toList();
     }
 
+    /**
+     *
+     * @param schedulesId
+     * @param id
+     * @param commentRequestDto
+     * @return 수정된 댓글
+     */
     @Transactional
     public CommentResponseDto updateComment(Long schedulesId, Long id, CommentRequestDto commentRequestDto) {
         findScheduleById(schedulesId);
@@ -76,6 +83,21 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
+    /**
+     *
+     * @param schedulesId
+     * @param id
+     * @return 삭제된 댓글 id
+     */
+    public Long deleteComment(Long schedulesId, Long id) {
+        findScheduleById(schedulesId);
+        Comment comment = findCommentById(id);
+
+        commentRepository.delete(comment);
+
+        return id;
+    }
+
     private Schedule findScheduleById(Long id){
         return scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
     }
@@ -83,6 +105,7 @@ public class CommentService {
     private Comment findCommentById(Long id){
         return commentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("댓글을 찾지 못했습니다."));
     }
+
 
 
 }
