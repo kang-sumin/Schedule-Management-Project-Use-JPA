@@ -8,6 +8,8 @@ import com.sparta.schedule.repository.CommentRepository;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentService {
 
@@ -37,11 +39,27 @@ public class CommentService {
         return commentResponseDto;
     }
 
-    public CommentResponseDto getSchedule(Long schedulesId, Long id) {
+    /**
+     *
+     * @param schedulesId
+     * @param id
+     * @return 단건 조회된 댓글
+     */
+    public CommentResponseDto getComment(Long schedulesId, Long id) {
         findScheduleById(schedulesId);
         Comment comment = commentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("댓글을 찾지 못했습니다."));
 
         return new CommentResponseDto(comment);
+    }
+
+
+    public List<CommentResponseDto> getComments(Long schedulesId) {
+        findScheduleById(schedulesId);
+        return commentRepository
+                .findAll()
+                .stream()
+                .map(CommentResponseDto::new)
+                .toList();
     }
 
     private Schedule findScheduleById(Long id){
