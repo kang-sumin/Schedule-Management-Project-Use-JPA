@@ -9,9 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -63,23 +63,25 @@ public class ScheduleService {
         return new ScheduleResponseDto(schedule);
     }
 
-    public Page<ScheduleResponseDto> getSchedules(Pageable pageable) {
+    public Page<ScheduleResponseDto> getSchedules(int page, int size) {
+        Pageable pageable = PageRequest.of(page-1, size);
         Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
 
         return schedules.map(schedule -> new ScheduleResponseDto(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContents(),
+                schedule.getUserId(),
                 schedule.getComments().size(),
                 schedule.getCreatedAt(),
-                schedule.getModifiedAt(),
-                schedule.getUserId()
+                schedule.getModifiedAt()
                 ));
     }
 
     private Schedule findScheduleById(Long id){
         return scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
     }
+
 
 
 }

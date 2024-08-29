@@ -31,8 +31,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules")
-    public Page<ScheduleResponseDto> getAllSchedules(@PageableDefault(size = 10) Pageable pageable) {
-        return scheduleService.getSchedules(pageable);
+    public Page<ScheduleResponseDto> getAllSchedules(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size) {
+        return scheduleService.getSchedules(page, size);
     }
 
     @PutMapping("/schedules/{id}")

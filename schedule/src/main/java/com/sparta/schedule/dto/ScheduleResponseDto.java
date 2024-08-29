@@ -24,7 +24,7 @@ public class ScheduleResponseDto {
         this.modifiedAt = schedule.getModifiedAt();
     }
 
-    public ScheduleResponseDto(Long id, String title, String contents, int count, LocalDateTime createdAt, LocalDateTime modifiedAt, Long userId) {
+    public ScheduleResponseDto(Long id, String title, String contents, Long userId, int count, LocalDateTime createdAt, LocalDateTime modifiedAt ) {
         this.id = id;
         this.title = title;
         this.contents = contents;
