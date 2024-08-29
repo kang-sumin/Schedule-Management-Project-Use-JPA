@@ -3,17 +3,26 @@ package com.sparta.schedule.service;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
+import com.sparta.schedule.repository.CommentRepository;
 import com.sparta.schedule.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.awt.print.Pageable;
+import java.util.List;
 
 @Service
 public class ScheduleService {
 
     private ScheduleRepository scheduleRepository;
+    private CommentRepository commentRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, CommentRepository commentRepository) {
         this.scheduleRepository = scheduleRepository;
+        this.commentRepository = commentRepository;
     }
 
 
@@ -54,7 +63,23 @@ public class ScheduleService {
         return new ScheduleResponseDto(schedule);
     }
 
+    public Page<ScheduleResponseDto> getSchedules(Pageable pageable) {
+        Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
+
+        return schedules.map(schedule -> new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContents(),
+                schedule.getComments().size(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt(),
+                schedule.getUserId()
+                ));
+    }
+
     private Schedule findScheduleById(Long id){
         return scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
     }
+
+
 }
