@@ -37,6 +37,13 @@ public class CommentService {
         return commentResponseDto;
     }
 
+    public CommentResponseDto getSchedule(Long schedulesId, Long id) {
+        findScheduleById(schedulesId);
+        Comment comment = commentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("댓글을 찾지 못했습니다."));
+
+        return new CommentResponseDto(comment);
+    }
+
     private Schedule findScheduleById(Long id){
         return scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
     }

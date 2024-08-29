@@ -19,4 +19,9 @@ public class CommentController {
     public CommentResponseDto createComment(@PathVariable("schedulesId") Long schedulesId, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.createComment(schedulesId, commentRequestDto);
     }
+
+    @GetMapping("/comments/{id}")
+    public CommentResponseDto getComment(@PathVariable("schedulesId") Long schedulesId, @PathVariable("id") Long id) {
+        return commentService.getSchedule(schedulesId, id);
+    }
 }
