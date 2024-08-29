@@ -6,6 +6,7 @@ import com.sparta.schedule.entity.Comment;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.CommentRepository;
 import com.sparta.schedule.repository.ScheduleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,12 +48,16 @@ public class CommentService {
      */
     public CommentResponseDto getComment(Long schedulesId, Long id) {
         findScheduleById(schedulesId);
-        Comment comment = commentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("댓글을 찾지 못했습니다."));
+        Comment comment = findCommentById(id);
 
         return new CommentResponseDto(comment);
     }
 
-
+    /**
+     *
+     * @param schedulesId
+     * @return 전체 댓글
+     */
     public List<CommentResponseDto> getComments(Long schedulesId) {
         findScheduleById(schedulesId);
         return commentRepository
@@ -62,7 +67,22 @@ public class CommentService {
                 .toList();
     }
 
+    @Transactional
+    public CommentResponseDto updateComment(Long schedulesId, Long id, CommentRequestDto commentRequestDto) {
+        findScheduleById(schedulesId);
+        Comment comment = findCommentById(id);
+        comment.update(commentRequestDto);
+
+        return new CommentResponseDto(comment);
+    }
+
     private Schedule findScheduleById(Long id){
         return scheduleRepository.findById(id).orElseThrow(()->new IllegalArgumentException("일정을 찾지 못했습니다."));
     }
+
+    private Comment findCommentById(Long id){
+        return commentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("댓글을 찾지 못했습니다."));
+    }
+
+
 }

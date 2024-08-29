@@ -31,4 +31,9 @@ public class CommentController {
     public List<CommentResponseDto> getComments(@PathVariable("schedulesId") Long schedulesId) {
         return commentService.getComments(schedulesId);
     }
+
+    @PutMapping("/comments/{id}")
+    public CommentResponseDto updateComment(@PathVariable("schedulesId") Long schedulesId, @PathVariable("id") Long id, @RequestBody CommentRequestDto commentRequestDto) {
+        return commentService.updateComment(schedulesId, id, commentRequestDto);
+    }
 }
