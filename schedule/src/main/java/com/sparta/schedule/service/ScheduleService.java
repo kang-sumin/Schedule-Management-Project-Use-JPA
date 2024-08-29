@@ -18,11 +18,9 @@ import java.util.List;
 public class ScheduleService {
 
     private ScheduleRepository scheduleRepository;
-    private CommentRepository commentRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, CommentRepository commentRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.commentRepository = commentRepository;
     }
 
 
@@ -63,6 +61,12 @@ public class ScheduleService {
         return new ScheduleResponseDto(schedule);
     }
 
+    /**
+     *
+     * @param page
+     * @param size
+     * @return 조회된 일정
+     */
     public Page<ScheduleResponseDto> getSchedules(int page, int size) {
         Pageable pageable = PageRequest.of(page-1, size);
         Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
@@ -76,6 +80,18 @@ public class ScheduleService {
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt()
                 ));
+    }
+
+    /**
+     * @param id
+     * @return 삭제된 일정 id
+     */
+    public Long deleteSchedule(Long id) {
+        Schedule schedule = findScheduleById(id);
+
+        scheduleRepository.delete(schedule);
+
+        return id;
     }
 
     private Schedule findScheduleById(Long id){

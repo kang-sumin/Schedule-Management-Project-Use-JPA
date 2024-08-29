@@ -26,7 +26,6 @@ public abstract class Timestamped {
     private LocalDateTime modifiedAt;
 
     @PrePersist
-    @LastModifiedDate
     public void createdAt(){
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();

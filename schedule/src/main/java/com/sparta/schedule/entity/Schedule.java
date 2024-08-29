@@ -30,7 +30,7 @@ public class Schedule extends Timestamped {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     public Schedule(ScheduleRequestDto requestDto) {

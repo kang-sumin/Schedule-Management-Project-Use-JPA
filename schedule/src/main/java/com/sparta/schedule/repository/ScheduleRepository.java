@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    Optional<Schedule> findById(Long id);
 
     Page<Schedule> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
